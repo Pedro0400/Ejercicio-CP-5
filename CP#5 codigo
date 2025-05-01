@@ -1,0 +1,61 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_blobs
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+
+# Generación de datos de ejemplo
+X, _ = make_blobs(n_samples=300, centers=4, cluster_std=0.60, random_state=0)
+
+# Método del codo para estimar k
+def elbow_method(data, max_k=10):
+    wcss = []
+    for k in range(1, max_k+1):
+        kmeans = KMeans(n_clusters=k, init='k-means++', n_init=10, random_state=42)
+        kmeans.fit(data)
+        wcss.append(kmeans.inertia_)
+    
+    # Graficar resultados
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(1, max_k+1), wcss, marker='o', linestyle='--')
+    plt.title('Método del Codo')
+    plt.xlabel('Número de clústeres (k)')
+    plt.ylabel('WCSS')
+    plt.xticks(np.arange(1, max_k+1, 1))
+    plt.grid()
+    plt.show()
+    
+    return wcss
+
+# Método de la silueta para validación
+def silhouette_method(data, max_k=10):
+    silhouette_scores = []
+    for k in range(2, max_k+1):
+        kmeans = KMeans(n_clusters=k, init='k-means++', n_init=10, random_state=42)
+        labels = kmeans.fit_predict(data)
+        score = silhouette_score(data, labels)
+        silhouette_scores.append(score)
+    
+    # Graficar resultados
+    plt.figure(figsize=(10, 6))
+    plt.plot(range(2, max_k+1), silhouette_scores, marker='o', linestyle='--')
+    plt.title('Método de la Silueta')
+    plt.xlabel('Número de clústeres (k)')
+    plt.ylabel('Puntuación de Silueta')
+    plt.xticks(np.arange(2, max_k+1, 1))
+    plt.grid()
+    plt.show()
+    
+    return silhouette_scores
+
+# Aplicar ambos métodos
+wcss = elbow_method(X)
+silhouette_scores = silhouette_method(X)
+
+# Mostrar resultados numéricos
+print("WCSS para cada k:", [f"{x:.2f}" for x in wcss])
+print("Puntuaciones de silueta:", [f"{x:.4f}" for x in silhouette_scores])
+
+# Determinar k óptimo según silueta (máximo valor)
+optimal_k_silhouette = np.argmax(silhouette_scores) + 2  # +2 porque empezamos en k=2
+print(f"\nNúmero óptimo de clústeres según silueta: {optimal_k_silhouette}")
