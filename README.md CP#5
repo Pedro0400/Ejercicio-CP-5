@@ -1,0 +1,34 @@
+Explicación del Código
+
+1. **Generación de datos**: Creamos datos sintéticos con 4 clústeres claros usando `make_blobs`.
+
+2. **Método del codo**:
+   - Calculamos WCSS (inercia) para valores de k desde 1 hasta max_k
+   - Graficamos WCSS vs k para identificar el "codo" donde la mejora disminuye
+
+3. **Método de la silueta**:
+   - Calculamos el coeficiente de silueta para k desde 2 hasta max_k
+   - El coeficiente de silueta mide qué tan bien separados están los clústeres
+   - El k óptimo corresponde al valor con mayor puntuación de silueta
+
+4. **Visualización**: Mostramos ambas gráficas para comparar resultados
+
+## Resultados Esperados
+
+Para los datos generados con 4 clústeres:
+- El gráfico del codo debería mostrar una disminución marcada en WCSS hasta k=4, luego una reducción más gradual
+- El método de silueta debería mostrar un pico en k=4
+
+## Referencias Bibliográficas
+
+1. Analytics Vidhya. (2019). "Comprehensive Guide to K-Means Clustering". https://www.analyticsvidhya.com/blog/2019/08/comprehensive-guide-k-means-clustering/
+
+2. Hastie, T., Tibshirani, R., & Friedman, J. (2009). "The Elements of Statistical Learning". Springer. (Sección 14.3.6)
+
+3. Kaufman, L., & Rousseeuw, P. J. (2009). "Finding Groups in Data: An Introduction to Cluster Analysis". Wiley.
+
+4. Pedregosa, F., et al. (2011). "Scikit-learn: Machine Learning in Python". JMLR 12, pp. 2825-2830.
+
+## Conclusión
+
+El método del codo proporciona una forma visual intuitiva para estimar k, mientras que el método de la silueta ofrece una medida cuantitativa. En la práctica, se recomienda usar ambos métodos complementariamente para una decisión más robusta sobre el número óptimo de clústeres.
